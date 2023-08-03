@@ -3,7 +3,7 @@ import java.util.List;
 import java.util.Map;
 import java.lang.Math;
 import java.util.HashMap;
-import java.util.Arrays;
+import java.util.Scanner;
 
 
 public class HammingR {
@@ -26,10 +26,17 @@ public class HammingR {
             
     }
     public static void main(String[] args) {
+        Scanner input = new Scanner(System.in);
         // Received Hamming code (You can receive this code from the transmitter)
         String receivedHammingCode = "00100001001";
         receivedHammingCode = "01100001001"; // el segundo bit esta mal
-        //receivedHammingCode = "00100101001"; // el sexto bit esta mal
+        receivedHammingCode = "00100101001"; // el sexto bit esta mal
+        // el sexto y el segundo bit estan mal
+        //receivedHammingCode = "00100111011";
+
+        // input code
+        receivedHammingCode = input.nextLine();
+        input.close();
 
         System.out.println("Received Hamming code: " + receivedHammingCode);
         int m = receivedHammingCode.length();
@@ -62,6 +69,12 @@ public class HammingR {
         if (error > 0){
             String correctedHammingCode = fixError(receivedHammingCode, error);
             System.out.println("Corrected Hamming code: " + correctedHammingCode);
+            String correctedMessage = original(correctedHammingCode, r);
+            System.out.println("Corrected message: " + correctedMessage);
+        }
+        else {
+            String originalMessage = original(receivedHammingCode, r);
+            System.out.println("Mensaje: " +  originalMessage);
         }
         
     }
@@ -270,5 +283,18 @@ public class HammingR {
             }
         }
         return new_bits;
+    }
+
+    public static String original(String bits, int[] r){
+        // remove parity bits
+        String new_bits = "";
+        
+        for (int i = 0; i < bits.length(); i++) {
+            if (!isInArray(r, i + 1)) {
+                new_bits += bits.charAt(i);
+            }
+        }
+        return new_bits;
+
     }
 }

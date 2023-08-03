@@ -112,6 +112,7 @@ def sum_powers_of_2(number):
 
 
 trama = '1000001'
+trama = input('Ingrese la trama: ')
 print('Trama original: ', trama)
 trama = list(trama)
 print('Trama en código de hamming: ', generate_hamming_code(trama))
