@@ -1,3 +1,10 @@
+import socket
+import random
+
+iterations = 10000
+errorProbability = 0.1
+messageLength = 8
+
 def calculateChecksum(binaryMessage):
     crc = 0xFFFFFFFF
     table = [0] * 256
@@ -19,10 +26,28 @@ def calculateChecksum(binaryMessage):
     return crc ^ 0xFFFFFFFF
 
 if __name__ == "__main__":
-    print("----- CRC-32 Checksum Encoder -----")
+    port = 8080
 
-    binaryMessage = input("Enter the binary message: ")
+    s = socket.socket()
+    host = socket.gethostname()
+    s.connect((host, port))
     
-    checksum = calculateChecksum(binaryMessage)
-    checksumBinary = bin(checksum & 0xFFFFFFFF)[2:].zfill(32)
-    print("Full Message:", binaryMessage + checksumBinary)
+    for i in range(iterations):
+        message = ""
+
+        for j in range(messageLength):
+            message += str(random.randint(0, 1))
+
+        checksum = calculateChecksum(message)
+        checksumBinary = bin(checksum & 0xFFFFFFFF)[2:].zfill(32)
+        message = message + checksumBinary
+
+        # randomly flip a bit
+        if random.random() < errorProbability:
+            index = random.randint(0, len(message) - 1)
+            message = message[:index] + str(1 - int(message[index])) + message[index + 1:]
+        
+        s.send(message.encode())
+        data = s.recv(1024)
+        
+    s.close()
