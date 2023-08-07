@@ -31,6 +31,8 @@ if __name__ == "__main__":
     s = socket.socket()
     host = socket.gethostname()
     s.connect((host, port))
+
+    withError = 0
     
     for i in range(iterations):
         message = ""
@@ -44,10 +46,13 @@ if __name__ == "__main__":
 
         # randomly flip a bit
         if random.random() < errorProbability:
+            withError += 1
             index = random.randint(0, len(message) - 1)
             message = message[:index] + str(1 - int(message[index])) + message[index + 1:]
         
         s.send(message.encode())
         data = s.recv(1024)
-        
+    
+    withError = withError / iterations * 100
+    print("Percentage of valid messages: " + str(100 - withError) + "%")
     s.close()
