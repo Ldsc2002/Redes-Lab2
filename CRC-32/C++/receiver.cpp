@@ -104,7 +104,14 @@ int main() {
         send(new_socket, response, 1024, 0);
     }
 
-    std::cout << "Valid messages percentage: " << (float)valid / ITERATIONS * 100 << "%" << std::endl;
+    valread = read(new_socket, buffer, 1024);
+    std::string fullMessage;
+    for (int i = 0; i < valread; i++) {
+        fullMessage += buffer[i];
+    }
+
+    std::cout << "Valid messages sent: " << fullMessage << "%" << std::endl;
+    std::cout << "Valid messages detected: " << (float)valid / ITERATIONS * 100 << "%" << std::endl;
 
     close(new_socket);
     close(socket_fd);

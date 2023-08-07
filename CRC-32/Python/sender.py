@@ -53,6 +53,6 @@ if __name__ == "__main__":
         s.send(message.encode())
         data = s.recv(1024)
     
-    withError = withError / iterations * 100
-    print("Percentage of valid messages: " + str(100 - withError) + "%")
+    withError = 100 - (withError / iterations * 100)
+    s.send(str(withError).encode())
     s.close()
