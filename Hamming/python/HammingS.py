@@ -117,6 +117,27 @@ def ASCII_toBinary(letter):
     b = bin(ascii_value)[2:]
     return b
 
+import random
+
+def Noise(hamming):
+    # probabilidad de ruido de 1.5%
+    i = 0   
+    while i < len(hamming):
+        p = random.uniform(0, 1)
+        #print('p: ', p)
+        if p > 0.985:
+            #print("RUIDO A LA VERGA RUIDO")
+            if hamming[i] == '1':
+                hamming[i] = '0'
+            else:
+                hamming[i] = '1'
+        i += 1
+
+    hamming = ''.join(str(e) for e in hamming)
+    return hamming
+
+
+
 entrada = input('Ingrese su mensaje: ')
 cadena = list(entrada)
 #print('Mensaje original: ', cadena)
@@ -132,6 +153,11 @@ for i in cabena_binaria:
     trama.append(temp)
 
 print('Trama en código de hamming: ', trama)
+trama_noise = []
+for i in trama:
+    trama_noise.append(Noise(list(i)))
+
+print('Trama con ruido: ', trama_noise)
 
 from HammingR import main as HammingR
 

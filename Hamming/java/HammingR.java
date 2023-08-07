@@ -99,18 +99,12 @@ public class HammingR {
 
     public static void main(String[] args) {
         // ingresar el arreglo de códigos hamming
-        String[] helloWorld = {"01100001100", "01111000001", "01101101010", "10111011011", "0010000000", "00110101011", "11111010111", "11101101100", "00111011100", "01101101011", "0010000000", "0011100111"};
+        String[] helloWorld = {"10100001010", "00111011100", "10101001001", "11101000011", "00111010011", "1111000000", "10100100000", "10101001001", "01111010110", "10111101100", "10111010000", "00101000101", "01111101010"};
         String mensaje = "";
         for (int i = 0; i < helloWorld.length; i++) {
             mensaje += caracter(helloWorld[i]);
         }
         System.out.println("El mensaje es: " + mensaje);
-        String[] helloWorld2 = {"01100001100", "10111001001", "01101101010", "00101010011", "1110000000", "00110100011", "10101011111", "01101100101", "00101011100", "10101100011", "1110000000", "1011100011"};
-        String mensaje2 = "";
-        for (int i = 0; i < helloWorld2.length; i++) {
-            mensaje2 += caracter(helloWorld2[i]);
-        }
-        System.out.println("El mensaje es: " + mensaje2);
     }
 
 

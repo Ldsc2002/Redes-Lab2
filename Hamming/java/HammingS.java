@@ -18,6 +18,7 @@ public class HammingS {
     }
 
     public static String generateHammingCode(String binaryPlot) {
+        //System.out.println("Trama original: " + binaryPlot);
         int m = binaryPlot.length();
         int r = calculateParityBits(m);
         int n = m + r;
@@ -47,10 +48,13 @@ public class HammingS {
         for (int i : trueMessageBitsPos) {
             table.put(i, sumPowersOf2(i));
         }
+        //System.out.println("Tabla: " + table);
 
         for (int e : parityBitsPos) {
+            //System.out.println("Calculando bit de paridad para la posición " + e);
             calculateParityBit(table, e, hammingCode);
         }
+        //System.out.println("Trama: " + Arrays.toString(hammingCode));
 
         return new String(hammingCode);
     }
@@ -62,9 +66,10 @@ public class HammingS {
                 l.add(key-1);
             }
         }
+        //System.out.println("Bits a comprobar: " + l);
         List<Character> parityCheck = new ArrayList<>();
         for (int i : l) {
-            parityCheck.add(trama[i - 1]);
+            parityCheck.add(trama[i]);
         }
         trama[bit - 1] = evenParity(parityCheck);
     }
@@ -129,8 +134,8 @@ public class HammingS {
         for(char c : b.toCharArray()){
             double d = r.nextDouble();
             //System.out.println(" Probability_: "+d);
-            if(d > 0.99){
-                System.out.println("RUIDO A LA VERGA RUIDO");
+            if(d > 0.985){
+                //System.out.println("RUIDO A LA VERGA RUIDO");
                 sb.append(c == '0' ? '1' : '0');
             }else{
                 sb.append(c);
@@ -141,11 +146,11 @@ public class HammingS {
 
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
-        //System.out.print("Ingrese el mensaje: ");
-        //String dummy = scanner.nextLine();
-        String dummy = "Dark Souls 3";
+        System.out.print("Ingrese el mensaje: ");
+        String dummy = scanner.nextLine();
+        //String dummy = "Dark Souls 3";
         String[] binario = ASCII_to_Binary(dummy);
-        System.out.print("\bBinario: " + Arrays.toString(binario));
+        //System.out.print("\bBinario: " + Arrays.toString(binario));
         //System.out.print("Ingrese la trama: ");
         //String trama = scanner.nextLine();
         scanner.close();
@@ -156,7 +161,7 @@ public class HammingS {
         for (int i = 0; i < binario.length; i++) {
             hammingCode[i] = generateHammingCode(binario[i]);
         }
-        System.out.println("\nTrama sin ruido: " + Arrays.toString(hammingCode));
+        //System.out.println("\nTrama sin ruido: " + Arrays.toString(hammingCode));
         String[] hammingCodeNoise = new String[hammingCode.length];
         for (int i = 0; i < hammingCode.length; i++) {
             hammingCodeNoise[i] = Noise(hammingCode[i]);
