@@ -1,7 +1,9 @@
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 import java.util.Scanner;
 //import java.util.Arrays;
 
@@ -111,13 +113,54 @@ public class HammingS {
         return positions;
     }
 
+
+    public static String[] ASCII_to_Binary(String ascii) {
+        String[] binary = new String[ascii.length()];
+        for (int i = 0; i < ascii.length(); i++) {
+            binary[i] = Integer.toBinaryString(ascii.charAt(i));
+        }
+        return binary;
+    }
+
+    public static String Noise(String b){
+        StringBuilder sb = new StringBuilder();
+        int seed = (int) System.currentTimeMillis();
+        Random r = new Random(seed);
+        for(char c : b.toCharArray()){
+            double d = r.nextDouble();
+            //System.out.println(" Probability_: "+d);
+            if(d > 0.99){
+                System.out.println("RUIDO A LA VERGA RUIDO");
+                sb.append(c == '0' ? '1' : '0');
+            }else{
+                sb.append(c);
+            }
+        }
+        return sb.toString();
+    }
+
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
-        System.out.print("Ingrese la trama: ");
-        String trama = scanner.nextLine();
+        //System.out.print("Ingrese el mensaje: ");
+        //String dummy = scanner.nextLine();
+        String dummy = "Dark Souls 3";
+        String[] binario = ASCII_to_Binary(dummy);
+        System.out.print("\bBinario: " + Arrays.toString(binario));
+        //System.out.print("Ingrese la trama: ");
+        //String trama = scanner.nextLine();
         scanner.close();
-        System.out.println("Trama original: " + trama);
-        String hammingCode = generateHammingCode(trama);
-        System.out.println("Trama en código de Hamming: " + hammingCode);
+        //System.out.println("Trama original: " + trama);
+        //String hammingCode = generateHammingCode(trama);
+        //System.out.println("Trama en código de Hamming: " + hammingCode);
+        String[] hammingCode = new String[binario.length];
+        for (int i = 0; i < binario.length; i++) {
+            hammingCode[i] = generateHammingCode(binario[i]);
+        }
+        System.out.println("\nTrama sin ruido: " + Arrays.toString(hammingCode));
+        String[] hammingCodeNoise = new String[hammingCode.length];
+        for (int i = 0; i < hammingCode.length; i++) {
+            hammingCodeNoise[i] = Noise(hammingCode[i]);
+        }
+        System.out.println("Trama con ruido: " + Arrays.toString(hammingCodeNoise));
     }
 }

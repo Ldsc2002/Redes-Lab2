@@ -110,9 +110,28 @@ def sum_powers_of_2(number):
     #print(f"Positions to check: {positions}")
     return positions
 
+def ASCII_toBinary(letter):
+    ascii_value = ord(letter)
+    #print(' - letter: ', letter)
+    #print(' - ascii: ', ascii_value)
+    b = bin(ascii_value)[2:]
+    return b
 
-trama = '1000001'
-trama = input('Ingrese la trama: ')
-print('Trama original: ', trama)
-trama = list(trama)
-print('Trama en código de hamming: ', generate_hamming_code(trama))
+entrada = input('Ingrese su mensaje: ')
+cadena = list(entrada)
+#print('Mensaje original: ', cadena)
+cabena_binaria = []
+for i in cadena:
+    cabena_binaria.append(ASCII_toBinary(i))
+
+print('Trama en binario: ', cabena_binaria)
+trama = []
+for i in cabena_binaria:
+    temp = generate_hamming_code(list(i))
+    #print('Trama en código de hamming: ', temp)
+    trama.append(temp)
+
+print('Trama en código de hamming: ', trama)
+
+from HammingR import main as HammingR
+

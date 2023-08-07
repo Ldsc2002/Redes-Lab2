@@ -3,7 +3,7 @@ import java.util.List;
 import java.util.Map;
 import java.lang.Math;
 import java.util.HashMap;
-import java.util.Scanner;
+//import java.util.Scanner;
 
 
 public class HammingR {
@@ -25,20 +25,24 @@ public class HammingR {
         return positions;
             
     }
-    public static void main(String[] args) {
-        Scanner input = new Scanner(System.in);
+
+    
+    //public static void main(String[] args) 
+    public static String caracter(String receivedHammingCode)
+    {
+        //Scanner input = new Scanner(System.in);
         // Received Hamming code (You can receive this code from the transmitter)
-        String receivedHammingCode = "00100001001";
-        receivedHammingCode = "01100001001"; // el segundo bit esta mal
-        receivedHammingCode = "00100101001"; // el sexto bit esta mal
+        //String receivedHammingCode = "00100001001";
+        //receivedHammingCode = "01100001001"; // el segundo bit esta mal
+        //receivedHammingCode = "00100101001"; // el sexto bit esta mal
         // el sexto y el segundo bit estan mal
         //receivedHammingCode = "00100111011";
 
         // input code
-        receivedHammingCode = input.nextLine();
-        input.close();
+        //receivedHammingCode = input.nextLine();
+        //input.close();
 
-        System.out.println("Received Hamming code: " + receivedHammingCode);
+        //System.out.println("Received Hamming code: " + receivedHammingCode);
         int m = receivedHammingCode.length();
         int[] r = calculateParityBits(m);
         String receivedParityBits = "";
@@ -65,18 +69,48 @@ public class HammingR {
         //System.out.println(Arrays.toString(m_pos));
         String new_parity_bits = generate_hamming_parity(receivedHammingCode, r, m_pos);
         //System.out.println("New parity bits: " + new_parity_bits);
+        String letter = "";
         int error = findError(receivedParityBits, new_parity_bits);
         if (error > 0){
             String correctedHammingCode = fixError(receivedHammingCode, error);
-            System.out.println("Corrected Hamming code: " + correctedHammingCode);
+            //System.out.println("Corrected Hamming code: " + correctedHammingCode);
             String correctedMessage = original(correctedHammingCode, r);
-            System.out.println("Corrected message: " + correctedMessage);
+            //System.out.println("Corrected message: " + correctedMessage);
+            letter = correctedMessage;
         }
         else {
             String originalMessage = original(receivedHammingCode, r);
-            System.out.println("Mensaje: " +  originalMessage);
+            //System.out.println("Mensaje: " +  originalMessage);
+            letter = originalMessage;
         }
+        letter = fromBinaryToAscii(letter);
+        return letter;
         
+    }
+
+    public static String fromBinaryToAscii(String b){
+        String ascii = "";
+        int decimal_value = Integer.parseInt(b, 2);
+        char c = (char) decimal_value;
+        ascii += c;
+        return ascii;
+    }
+
+
+    public static void main(String[] args) {
+        // ingresar el arreglo de códigos hamming
+        String[] helloWorld = {"01100001100", "01111000001", "01101101010", "10111011011", "0010000000", "00110101011", "11111010111", "11101101100", "00111011100", "01101101011", "0010000000", "0011100111"};
+        String mensaje = "";
+        for (int i = 0; i < helloWorld.length; i++) {
+            mensaje += caracter(helloWorld[i]);
+        }
+        System.out.println("El mensaje es: " + mensaje);
+        String[] helloWorld2 = {"01100001100", "10111001001", "01101101010", "00101010011", "1110000000", "00110100011", "10101011111", "01101100101", "00101011100", "10101100011", "1110000000", "1011100011"};
+        String mensaje2 = "";
+        for (int i = 0; i < helloWorld2.length; i++) {
+            mensaje2 += caracter(helloWorld2[i]);
+        }
+        System.out.println("El mensaje es: " + mensaje2);
     }
 
 
@@ -248,7 +282,7 @@ public class HammingR {
         int error = fromBinaryToDecimal(b3);
         //System.out.println("Error: " + error);
         if (error == 0){
-            System.out.println("No hay error");
+            //System.out.println("No hay error");
             return 0;
         }
         else {

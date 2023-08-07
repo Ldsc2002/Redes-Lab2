@@ -102,10 +102,10 @@ def find_error(b1, b2):
 
     error = from_binary_to_decimal(b3)
     if error == 0:
-        print("No hay error")
+        #print("No hay error")
         return 0
     else:
-        print("Error en la posicion:", error)
+        #print("Error en la posicion:", error)
         return error
 
 
@@ -127,10 +127,20 @@ def original(bits, r):
     return new_bits
 
 
-def main():
+def binary_to_ascii(bits):
+    n = len(bits)
+    ascii = ""
+    for i in range(0, n, 8):
+        ascii += chr(from_binary_to_decimal(bits[i:i + 8]))
+    return ascii
+
+
+
+
+def main(received_hamming_code):
     # Received Hamming code (You can receive this code from the transmitter)
-    received_hamming_code = input("Ingrese el código de Hamming recibido: ")
-    print("Received Hamming code:", received_hamming_code)
+    #
+    #print("Received Hamming code:", received_hamming_code)
 
     m = len(received_hamming_code)
     r = calculate_parity_bits(m)
@@ -142,17 +152,31 @@ def main():
     m_pos = [i + 1 for i in range(m) if (i + 1) not in r]
 
     new_parity_bits = generate_hamming_parity(received_hamming_code, r, m_pos)
+    car = ''
 
     error = find_error(received_parity_bits, new_parity_bits)
     if error > 0:
         corrected_hamming_code = fix_error(received_hamming_code, error)
-        print("Corrected Hamming code:", corrected_hamming_code)
+        #print("Corrected Hamming code:", corrected_hamming_code)
         corrected_message = original(corrected_hamming_code, r)
-        print("Corrected message:", corrected_message)
+        #print("Corrected message:", corrected_message)
+        ascii = binary_to_ascii(corrected_message)
+        car = ascii
     else:
         original_message = original(received_hamming_code, r)
-        print("Mensaje:", original_message)
+        #print("Mensaje:", original_message)
+        ascii = binary_to_ascii(original_message)
+        #print("ASCII:", ascii)
+        car = ascii
+
+    #print('Caracter: ', car)
+    return car
 
 
 if __name__ == "__main__":
-    main()
+    #received_hamming_code = input("Ingrese el código de Hamming recibido: ")
+    hello_world = ['01100001100', '10111001001', '01101101010', '00101010011', '1110000000', '00110100011', '10101011111', '01101100101', '00101011100', '10101100011', '1110000000', '1011100011']
+    mensaje = ''
+    for e in hello_world:
+        mensaje += main(e)
+    print(mensaje)
