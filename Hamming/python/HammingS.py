@@ -138,26 +138,47 @@ def Noise(hamming):
 
 
 
-entrada = input('Ingrese su mensaje: ')
+"""entrada = input('Ingrese su mensaje: ')
 cadena = list(entrada)
 #print('Mensaje original: ', cadena)
 cabena_binaria = []
 for i in cadena:
     cabena_binaria.append(ASCII_toBinary(i))
 
-print('Trama en binario: ', cabena_binaria)
+#print('Trama en binario: ', cabena_binaria)
 trama = []
 for i in cabena_binaria:
     temp = generate_hamming_code(list(i))
     #print('Trama en código de hamming: ', temp)
     trama.append(temp)
 
-print('Trama en código de hamming: ', trama)
+#print('Trama en código de hamming: ', trama)
 trama_noise = []
 for i in trama:
     trama_noise.append(Noise(list(i)))
 
 print('Trama con ruido: ', trama_noise)
+#for e in trama_noise:
+    #print(e, type(e))
 
-from HammingR import main as HammingR
+from HammingR import main as HammingR"""
+
+
+def message():
+    entrada = input('Ingrese su mensaje: ')
+    cadena = list(entrada)
+    cadena_binaria = []
+    for i in cadena:
+        cadena_binaria.append(ASCII_toBinary(i))
+
+    trama = []
+    for i in cadena_binaria:
+        temp = generate_hamming_code(list(i))
+        trama.append(temp)
+
+    trama_noise = []
+    for i in trama:
+        trama_noise.append(Noise(list(i)))
+
+    return trama_noise
 

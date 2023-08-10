@@ -153,7 +153,7 @@ def main(received_hamming_code):
 
     new_parity_bits = generate_hamming_parity(received_hamming_code, r, m_pos)
     car = ''
-
+    # error points to the position of the error in the received Hamming code, not the amount of errors
     error = find_error(received_parity_bits, new_parity_bits)
     if error > 0:
         corrected_hamming_code = fix_error(received_hamming_code, error)
@@ -170,13 +170,28 @@ def main(received_hamming_code):
         car = ascii
 
     #print('Caracter: ', car)
-    return car
+    # devolver el caracter, si hubo error y la cantidad de bits de paridad
+    return car, error, len(r)
+
+    
 
 
-if __name__ == "__main__":
-    #received_hamming_code = input("Ingrese el código de Hamming recibido: ")
-    hello_world = ['01100001100', '10111001001', '01101101010', '00101010011', '1110000000', '00110100011', '10101011111', '01101100101', '00101011100', '10101100011', '1110000000', '1011100011']
-    mensaje = ''
-    for e in hello_world:
-        mensaje += main(e)
-    print(mensaje)
+def receive_Message(hamming):
+    # binary_codes = string_data[1:-1].split(', ')
+    error_acum = 0
+    parity_acum = 0
+    codes_list = hamming[1:-1].split(', ')
+    chars = []
+    for code in codes_list:
+        #chars.append(main(str(code)))
+        c, e, p = main(str(code))
+        chars.append(c)
+        if e > 0:
+            print('Error encontrado en el codigo: ', code)
+            error_acum += 1
+        parity_acum += p
+            
+    
+    return ''.join(chars), error_acum, parity_acum
+
+
