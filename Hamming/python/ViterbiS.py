@@ -25,8 +25,40 @@ def convolucion(input):
     return output
 
 
-entrada = input("Introduce la cadena de bits: ")
-entrada = list(entrada)
-entrada = [int(i) for i in entrada]
-print(entrada)
-print(convolucion(entrada))
+def generate():
+    file_path = "./Hamming/java/trials.txt"  # Replace with the actual file path
+    target_length = 10000
+
+    lines = []
+
+    while len(lines) < target_length:
+        try:
+            with open(file_path, "r") as file:
+                for line in file:
+                    lines.append(line.strip())
+                    if len(lines) >= target_length:
+                        break
+        except IOError as e:
+            print("Error reading the file:", e)
+
+    lyrics_list = lines
+    return lyrics_list
+
+    # Now you have the lines from the file in the 'lyrics_list' list
+    # You can use the list as needed
+
+
+import os
+
+def is_valid_file_path(file_path):
+    return os.path.exists(file_path)
+    
+
+if __name__ == "__main__":
+    l = generate()
+    print(len(l))
+    for e in l:
+        print(e)
+    
+
+

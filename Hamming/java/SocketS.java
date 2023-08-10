@@ -1,16 +1,51 @@
+import java.io.BufferedReader;
+import java.io.FileReader;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.net.InetAddress;
 import java.net.Socket;
 import java.net.UnknownHostException;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Scanner;
 
 
 public class SocketS {
 
+    public static String[] generate() {
+        String filePath = "./Hamming/java/trials.txt"; // Replace with the actual file path
+        int targetLength = 10000;
+
+        List<String> lines = new ArrayList<>();
+
+        while (lines.size() < targetLength) {
+            try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
+                String line;
+                while ((line = reader.readLine()) != null) {
+                    lines.add(line);
+                    if (lines.size() >= targetLength) {
+                        break;
+                    }
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
+        String[] lyricsArray = lines.toArray(new String[0]);
+
+        return lyricsArray;
+    }
+
     private static String HOST = "127.0.0.1";
     private static int PORT = 65432;
+    static String[] lyrics = generate();
+
+
+
+
+
 
     public static void main(String[] args) throws IOException, UnknownHostException, InterruptedException {
 
@@ -20,11 +55,12 @@ public class SocketS {
         OutputStreamWriter writer = new OutputStreamWriter(socketCliente.getOutputStream());
         Scanner scanner = new Scanner(System.in);
 
-        while (i < 2) {
+        while (i < lyrics.length) {
 
-            System.out.println("Enviando Data\n");
-            System.out.print("Ingrese el mensaje: ");
-            String dummy = scanner.nextLine();
+            //System.out.println("Enviando Data\n");
+            String dummy = lyrics[i];
+            System.out.print("Ingrese el mensaje: " + dummy + "\n");
+            //String dummy = scanner.nextLine();
             
             HammingS h = new HammingS();
             String[] hamming = h.SendMessage(dummy);
@@ -36,7 +72,7 @@ public class SocketS {
             //System.out.println("Leman Russ\n");
             //System.out.println("Rogal Dorn\n");
 
-            Thread.sleep(1000);
+            Thread.sleep(100);
             i++;
         }
         scanner.close();

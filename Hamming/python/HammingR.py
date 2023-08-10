@@ -187,7 +187,7 @@ def receive_Message(hamming):
         c, e, p = main(str(code))
         chars.append(c)
         if e > 0:
-            print('Error encontrado en el codigo: ', code)
+            #print('Error encontrado en el codigo: ', code)
             error_acum += 1
         parity_acum += p
             
