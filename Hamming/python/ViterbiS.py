@@ -48,10 +48,13 @@ def generate():
     # You can use the list as needed
 
 
-import os
-
-def is_valid_file_path(file_path):
-    return os.path.exists(file_path)
+def export_to_txt(data, file_path):
+    try:
+        with open(file_path, "w") as file:
+            for line in data:
+                file.write(line + "\n")
+    except IOError as e:
+        print("Error writing to the file:", e)
     
 
 if __name__ == "__main__":
@@ -59,6 +62,7 @@ if __name__ == "__main__":
     print(len(l))
     for e in l:
         print(e)
+    export_to_txt(l, "./Hamming/message.txt")
     
 
 

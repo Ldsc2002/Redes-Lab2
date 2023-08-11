@@ -14,28 +14,23 @@ import java.util.Scanner;
 public class SocketS {
 
     public static String[] generate() {
-        String filePath = "./Hamming/java/trials.txt"; // Replace with the actual file path
-        int targetLength = 10000;
+        String filePath = "./Hamming/message.txt"; // Replace with the actual file path
 
         List<String> lines = new ArrayList<>();
 
-        while (lines.size() < targetLength) {
-            try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
-                String line;
-                while ((line = reader.readLine()) != null) {
-                    lines.add(line);
-                    if (lines.size() >= targetLength) {
-                        break;
-                    }
-                }
-            } catch (IOException e) {
-                e.printStackTrace();
+        try (BufferedReader br = new BufferedReader(new FileReader(filePath))) {
+            String line;
+            while ((line = br.readLine()) != null) {
+                lines.add(line);
             }
+        } catch (IOException ex) {
+            ex.printStackTrace();
         }
 
-        String[] lyricsArray = lines.toArray(new String[0]);
+        String[] arr = lines.toArray(new String[lines.size()]);
+        System.out.println(arr.length);
 
-        return lyricsArray;
+        return arr;
     }
 
     private static String HOST = "127.0.0.1";

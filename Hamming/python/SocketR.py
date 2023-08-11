@@ -5,22 +5,12 @@ HOST = "127.0.0.1"
 PORT = 65432
 
 def generate():
-    file_path = "./Hamming/java/trials.txt"  # Replace with the actual file path
-    target_length = 10000
-
-    lines = []
-
-    while len(lines) < target_length:
-        try:
-            with open(file_path, "r") as file:
-                for line in file:
-                    lines.append(line.strip())
-                    if len(lines) >= target_length:
-                        break
-        except IOError as e:
-            print("Error reading the file:", e)
-
-    lyrics_list = lines
+    file_path = "./Hamming/message.txt"
+    lyrics_list = []
+    with open(file_path, "r") as file:
+        for line in file:
+            lyrics_list.append(line.strip())
+    print(len(lyrics_list))
     return lyrics_list
 
 true_message = generate()
@@ -59,6 +49,7 @@ try:
                     probability_noise = 0.015
                     correct_message = True if message == true_message[i] else False
                     info = {
+                        "length": len(true_message[i]),
                         "error": error,
                         "parity": parity,
                         "probability_noise": probability_noise,
@@ -85,6 +76,7 @@ finally:
 print("Server stopped")
 print("Received data:")
 statictics = {
+    "length": 0,
     "error": 0,
     "parity": 0,
     "probability_noise": 0,
@@ -92,17 +84,20 @@ statictics = {
 }
 
 for e in receiver_data:
+    statictics["length"] += e["length"]
     statictics["error"] += e["error"]
     statictics["parity"] += e["parity"]
     statictics["probability_noise"] += e["probability_noise"]
     statictics["correct_message"] += 1 if e["correct_message"] else 0
 
 statictics["probability_noise"] /= len(receiver_data)
+statictics["length"] /= len(receiver_data)
 
 print("Probabilidad de ruido:", statictics["probability_noise"])
+print("Largo promedio de mensajes: ", statictics["length"])
 print("Cantidad total de errores en mensajes causados por ruido: ", statictics["error"])
 print("Cantidad promedio de errores en mensajes causados por ruido: ", statictics["error"] / len(receiver_data))
-print("Cantidad total de bits de paridad por mensaje: ", statictics["parity"] / len(receiver_data))
-print("Cantidad promedio de bits de paridad por mensaje: ", statictics["parity"])
+print("Cantidad promedio de bits de paridad por mensaje: ", statictics["parity"] / len(receiver_data))
+print("Cantidad total de bits de paridad por mensaje: ", statictics["parity"])
 print("Cantidad de mensajes recibidos: ", len(receiver_data))
 print("Cantidad de mensajes recibidos correctamente: ", statictics["correct_message"])
